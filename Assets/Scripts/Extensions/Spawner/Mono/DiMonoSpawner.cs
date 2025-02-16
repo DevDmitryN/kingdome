@@ -5,17 +5,19 @@ using Zenject;
 
 namespace Extensions.Spawner.Mono
 {
-    public class DiMonoSpawner<T> : ISpawner<T> where T : MonoBehaviour
+    public class DiMonoSpawner<T, TConfigType> : ISpawner<T> where T : MonoBehaviour
     {
         private readonly T _gameObject;
+        private readonly TConfigType _config;
         private readonly Transform _folder;
         private readonly IObjectPool<T> _pool;
 
-        public DiMonoSpawner(DiContainer diContainer, T gameObject, Transform folder)
+        public DiMonoSpawner(DiContainer diContainer, T gameObject, Transform folder, TConfigType config)
         {
             _gameObject = gameObject;
             _folder = folder;
-            _pool = new DiMonoPool<T>(diContainer, gameObject, folder, 10);
+            _config = config;
+            _pool = new DiMonoPool<T, TConfigType>(diContainer, gameObject, folder, 10, config);
         }
         
         public T Spawn(Vector3 position)

@@ -5,13 +5,13 @@ using UniRx;
 
 namespace Gameplay.Worker.Commands
 {
-    public class ExtractGoldCommand : IWorkerCommand
+    public class ExtractWorkerCommand : IWorkerCommand
     {
         private WorkerGO _workerGo;
         private readonly IExtractable _extractable;
         private readonly IDestination _destination;
 
-        public ExtractGoldCommand(IExtractable extractable, IDestination destination)
+        public ExtractWorkerCommand(IExtractable extractable, IDestination destination)
         {
             _extractable = extractable;
             _destination = destination;

@@ -17,80 +17,86 @@ namespace Gameplay.Worker
 {
     public class WorkerController : IDisposable
     {
-        [Inject(Id = SpawnerType.Worker)]
-        private readonly ISpawner<WorkerGO> _spawner;
+        [Inject(Id = SpawnerType.Worker)] private readonly ISpawner<WorkerGO> _spawner;
         private readonly WorkerControllerConfig _config;
-        private readonly GoldMineController _mineController;
+        private readonly ResourceController _resourceController;
         private readonly IDestination _destination;
 
-        private readonly List<WorkerGO> _workers = new();
-        private readonly Stack<WorkerGO> _freeWorkers = new();
-        
-        private readonly Queue<IWorkerCommand> _workerCommandsQueue = new ();
+        private readonly Dictionary<ResourceType, List<WorkerGO>> _workers = new();
+        private readonly Dictionary<ResourceType, Stack<WorkerGO>> _freeWorkers = new();
+        private readonly  Dictionary<ResourceType,Queue<IWorkerCommand>> _workerCommandsQueue = new();
         private readonly List<IWorkerCommand> _activeWorkerCommands = new();
 
-        private int _currentWorkerCount = 0;
 
         private Subject<Unit> _onDestroy = new();
-        
-        WorkerController(WorkerControllerConfig config, GoldMineController mineController, IDestination destination)
+
+        WorkerController(WorkerControllerConfig config, ResourceController resourceController, IDestination destination)
         {
             _config = config;
-            _mineController = mineController;
+            _resourceController = resourceController;
             _destination = destination;
-
-            _currentWorkerCount = config.InitCount;
         }
 
-        public void Init()
+        private WorkerGO Spawn()
         {
-            for (int i = 0; i < _currentWorkerCount; i++)
+            var position = RandomExtension.GenerateRandomCoordinates(_config.CenterPosition, _config.MinRadiusSpawn,
+                _config.MaxRadiusSpawn);
+            return _spawner.Spawn(position);
+        }
+
+        private void InitWorkers()
+        {
+            foreach (var spawnConfig in _config.WorkerSpawnConfigs)
             {
-                Spawn();
+                _workerCommandsQueue.Add(spawnConfig.ResourceType, new Queue<IWorkerCommand>());
+                var workers = new List<WorkerGO>();
+                var freeWorkers = new Stack<WorkerGO>();
+                for (int i = 0; i < spawnConfig.InitAmount; i++)
+                {
+                    var worker = Spawn();
+                    workers.Add(worker);
+                    freeWorkers.Push(worker);
+                }
+
+                _workers.Add(spawnConfig.ResourceType, workers);
+                _freeWorkers.Add(spawnConfig.ResourceType, freeWorkers);
+
+                var resources = _resourceController
+                    .GetResources(spawnConfig.ResourceType)
+                    .OrderBy(v => Vector3.Distance(v.Transform.position, _destination.Transform.position))
+                    .ToList();
+
+                foreach (var extractable in resources)
+                {
+                    AddCommand(extractable);
+                }
             }
-
-            var sortedMines = _mineController
-                .GetMines()
-                .OrderBy(v => Vector3.Distance(v.Transform.position, _destination.Transform.position))
-                .ToList();
-                
-            foreach (var extractable in sortedMines)
-            {
-                AddCommand(extractable);
-            }
-        }
-
-        public void Dispose()
-        {
-            _onDestroy.OnNext(Unit.Default);
-            _onDestroy.OnCompleted();
-            _onDestroy.Dispose();
-        }
-
-        private void Spawn()
-        {
-            var position = RandomExtension.GenerateRandomCoordinates(_config.CenterPosition, _config.MinRadiusSpawn,_config.MaxRadiusSpawn);
-            var worker = _spawner.Spawn(position);
-            _workers.Add(worker);
-            _freeWorkers.Push(worker);
         }
 
         private void AddCommand(IExtractable extractable)
         {
-            var newCommand = new ExtractGoldCommand(extractable, _destination);
-            
-            if (_freeWorkers.IsEmpty())
+            if (_freeWorkers.TryGetValue(extractable.Info.ResourceType, out var freeWorkerStack))
             {
-                _workerCommandsQueue.Enqueue(newCommand);
+                var newCommand = new ExtractWorkerCommand(extractable, _destination);
+                
+                if (freeWorkerStack.IsEmpty())
+                {
+                    _workerCommandsQueue[extractable.Info.ResourceType].Enqueue(newCommand);
+                }
+                else
+                {
+                    var worker = freeWorkerStack.Pop();
+                    var queue = _workerCommandsQueue[extractable.Info.ResourceType];
+                    RunCommand(queue, newCommand, worker);
+                }
             }
             else
             {
-                var worker = _freeWorkers.Pop();
-                RunCommand(newCommand, worker);
+                Debug.LogWarning($"Стек воркеров не найден для ресурса {extractable.Info.ResourceType}");
             }
         }
 
-        private void RunCommand(IWorkerCommand command, WorkerGO worker)
+        private void RunCommand(Queue<IWorkerCommand> queue, IWorkerCommand command, WorkerGO worker)
         {
             Debug.Log("Следующая команда");
             command.Execute(worker)
@@ -99,15 +105,27 @@ namespace Gameplay.Worker
                 .Subscribe(value =>
                 {
                     _activeWorkerCommands.Remove(command);
-                    
-                    if (!_workerCommandsQueue.IsEmpty())
+
+                    if (!queue.IsEmpty())
                     {
-                        var nextCommand = _workerCommandsQueue.Dequeue();
+                        var nextCommand = queue.Dequeue();
                         _activeWorkerCommands.Add(nextCommand);
-                        RunCommand(nextCommand, worker);
+                        RunCommand(queue, nextCommand, worker);
                     }
                 });
             _activeWorkerCommands.Add(command);
+        }
+
+        public void Init()
+        {
+            InitWorkers();
+        }
+
+        public void Dispose()
+        {
+            _onDestroy.OnNext(Unit.Default);
+            _onDestroy.OnCompleted();
+            _onDestroy.Dispose();
         }
     }
 }

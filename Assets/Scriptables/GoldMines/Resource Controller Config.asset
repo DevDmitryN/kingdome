@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172787941ddfc1b409dffbbecc8c3a40, type: 3}
-  m_Name: GoldMine Controller Config
+  m_Name: Resource Controller Config
   m_EditorClassIdentifier: 
-  StartSpawn: 5
+  SpawnConfigs:
+  - ResourceType: 0
+    InitAmount: 100
+  - ResourceType: 1
+    InitAmount: 100
   CenterPosition: {x: 0, y: 0, z: 0}
   MinRadiusSpawn: 3
   MaxRadiusSpawn: 8

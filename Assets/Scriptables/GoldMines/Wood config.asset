@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a16e107ea1b498ab8d3369debefa2ee, type: 3}
-  m_Name: Worker Config
+  m_Script: {fileID: 11500000, guid: c862953b4bb5439ab5e8d853eb06688f, type: 3}
+  m_Name: Wood config
   m_EditorClassIdentifier: 
-  TakeAmount: 1
-  ExtractSpeed: 0.5
-  Speed: 5
+  ResourceType: 1
+  TotalAmount: 2
+  Image: {fileID: 7440981132975211316, guid: 31265ca4ebb1c6a4ba58cec5fee8633e, type: 3}

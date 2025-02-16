@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b3ba4cad3544d31b0c7768fd4550fbc, type: 3}
   m_Name: Worker Controller Config
   m_EditorClassIdentifier: 
-  InitCount: 2
+  WorkerSpawnConfigs:
+  - ResourceType: 0
+    InitAmount: 5
+  - ResourceType: 1
+    InitAmount: 5
   CenterPosition: {x: 0, y: 0, z: 0}
   MinRadiusSpawn: 1
   MaxRadiusSpawn: 2

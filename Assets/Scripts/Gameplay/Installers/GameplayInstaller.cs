@@ -15,10 +15,11 @@ namespace Gameplay.Installers
 {
     public class GameplayInstaller : MonoInstaller
     {
-        [SerializeField] private GoldMineGO _goldMineGo;
+        [FormerlySerializedAs("_goldMineGo")] [SerializeField] private ResourceGO resourceGo;
         [SerializeField] private Transform _goldMineFolder;
         [SerializeField] private ExtractableSO _goldMineConfig;
-        [SerializeField] private GoldMineControllerConfig _goldMineControllerConfig;
+        [SerializeField] private ExtractableSO _woodConfig;
+        [FormerlySerializedAs("_goldMineControllerConfig")] [SerializeField] private ResourceControllerConfig resourceControllerConfig;
         
         [SerializeField] private WorkerGO _workerGo;
         [SerializeField] private Transform _workerFolder;
@@ -29,21 +30,28 @@ namespace Gameplay.Installers
         
         public override void InstallBindings()
         {
-            Container.Bind<GoldMineController>().AsSingle()
-                .WithArguments(_goldMineControllerConfig);
+            Container.Bind<ResourceController>().AsSingle()
+                .WithArguments(resourceControllerConfig);
             Container.Bind<WorkerController>().AsSingle()
                 .WithArguments(_workerControllerConfig, _castle);
             
-            Container.Bind<ISpawner<GoldMineGO>>()
+            Container.Bind<ISpawner<ResourceGO>>()
                 .WithId(SpawnerType.GoldMine)
-                .To<DiMonoSpawner<GoldMineGO>>()
-                .AsSingle()
-                .WithArguments(_goldMineGo, _goldMineFolder);
+                .To<DiMonoSpawner<ResourceGO, ExtractableSO>>()
+                .AsCached()
+                .WithArguments(resourceGo, _goldMineFolder, _goldMineConfig);
+            
+            Container.Bind<ISpawner<ResourceGO>>()
+                .WithId(SpawnerType.Wood)
+                .To<DiMonoSpawner<ResourceGO, ExtractableSO>>()
+                .AsCached()
+                .WithArguments(resourceGo, _goldMineFolder, _woodConfig);
+            
             Container.Bind<ISpawner<WorkerGO>>()
                 .WithId(SpawnerType.Worker)
-                .To<DiMonoSpawner<WorkerGO>>()
+                .To<DiMonoSpawner<WorkerGO, WorkerConfigSO>>()
                 .AsSingle()
-                .WithArguments(_workerGo, _workerFolder);
+                .WithArguments(_workerGo, _workerFolder, workerConfig);
 
             Container.Bind<ExtractableSO>()
                 .FromInstance(_goldMineConfig)

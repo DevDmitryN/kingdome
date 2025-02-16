@@ -178,10 +178,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9fa0acdd5c4264b685443fcab343bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goldMineGo: {fileID: 3283603069695337175, guid: 5921d9d3ff9cf2b4e8d8dc9f8ea38751, type: 3}
+  resourceGo: {fileID: 3283603069695337175, guid: 5921d9d3ff9cf2b4e8d8dc9f8ea38751, type: 3}
   _goldMineFolder: {fileID: 178383373}
   _goldMineConfig: {fileID: 11400000, guid: 5310c3fff356d954e8c5e2cc309c0e34, type: 2}
-  _goldMineControllerConfig: {fileID: 11400000, guid: 1967e71894c0b684ab09e14412788355, type: 2}
+  _woodConfig: {fileID: 11400000, guid: 0ee5e27c4df47ed4c87a2646892ff703, type: 2}
+  resourceControllerConfig: {fileID: 11400000, guid: 1967e71894c0b684ab09e14412788355, type: 2}
   _workerGo: {fileID: 2902254629493273377, guid: 3856e73f5603b6840bd05b57b481be2c, type: 3}
   _workerFolder: {fileID: 1617766100}
   workerConfig: {fileID: 11400000, guid: 404c098368ac3f24a9ce05cc526972a5, type: 2}

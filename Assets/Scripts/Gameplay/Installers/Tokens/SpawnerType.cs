@@ -3,6 +3,7 @@
     public enum SpawnerType
     {
         GoldMine,
-        Worker
+        Wood,
+        Worker,
     }
 }
