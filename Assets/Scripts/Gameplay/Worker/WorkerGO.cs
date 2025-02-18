@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gameplay.Core.StateMachine;
 using Gameplay.Entities.Castle;
 using Gameplay.GoldMine;
 using Gameplay.Worker.Config;
@@ -13,7 +14,7 @@ namespace Gameplay.Worker
 {
     public class WorkerGO : MonoBehaviour, IWorker
     {
-        private Dictionary<Type, IWorkerState> _states = new();
+        private IStateSwitcher _stateSwitcher;
         [CanBeNull] private IWorkerState _currentState = null;
         private Subject<Unit> _extractionComplete = new Subject<Unit>();
         
@@ -26,38 +27,32 @@ namespace Gameplay.Worker
         private void Construct(WorkerConfigSO config)
         {
             Config = config;
+
+            _stateSwitcher = new BaseStateSwitcher(new List<IState>()
+            {
+                new IdleWorkerState(this),
+                new GoToExtractWorkerState(this),
+                new ExtractWorkerState(this),
+                new CarryWorkerState(this),
+                new CompleteWorkerState(this, () => _extractionComplete.OnNext(Unit.Default))
+            });
         }
         
         private void Awake()
         {
-            _states.Add(typeof(IdleWorkerState), new IdleWorkerState(this));
-            _states.Add(typeof(GoToExtractWorkerState), new GoToExtractWorkerState(this));
-            _states.Add(typeof(ExtractWorkerState), new ExtractWorkerState(this));
-            _states.Add(typeof(CarryWorkerState), new CarryWorkerState(this));
-            _states.Add(typeof(CompleteWorkerState), new CompleteWorkerState(this, () => _extractionComplete.OnNext(Unit.Default)));
-            
-            SetState(typeof(IdleWorkerState));
+            _stateSwitcher.SwitchState<IdleWorkerState>();
         }
 
-        public void SetState(Type stateType)
+        public void SetState<TState>() where TState : IWorkerState
         {
-            if (_states.TryGetValue(stateType, out var newState))
-            {
-                _currentState?.Exit();
-                newState.Enter();
-                _currentState = newState;
-            }
-            else
-            {
-                Debug.LogWarning($"Состояние не найдено {stateType}");
-            }
+            _stateSwitcher.SwitchState<TState>();
         }
 
         public IObservable<Unit> StartExtractProcess(IExtractable extractable, IDestination destination)
         {
             Work = extractable;
             Destination = destination;
-            SetState(typeof(GoToExtractWorkerState));
+            SetState<GoToExtractWorkerState>();
             return _extractionComplete.AsObservable();
         }
 

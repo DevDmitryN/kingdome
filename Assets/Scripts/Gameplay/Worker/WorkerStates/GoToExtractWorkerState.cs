@@ -20,7 +20,7 @@ namespace Gameplay.Worker.WorkerStates
             _worker.transform.DOMove(_worker.Work.Transform.position, duration)
                 .OnComplete(() =>
                 {
-                    _worker.SetState(typeof(ExtractWorkerState));
+                    _worker.SetState<ExtractWorkerState>();
                 });
         }
 

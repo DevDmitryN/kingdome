@@ -24,11 +24,11 @@ namespace Gameplay.Worker.WorkerStates
                 {
                     if (_worker.Work.IsEnded)
                     {
-                        _worker.SetState(typeof(CompleteWorkerState));
+                        _worker.SetState<CompleteWorkerState>();
                     }
                     else
                     {
-                        _worker.SetState(typeof(GoToExtractWorkerState));
+                        _worker.SetState<GoToExtractWorkerState>();
                     }
                 });
         }

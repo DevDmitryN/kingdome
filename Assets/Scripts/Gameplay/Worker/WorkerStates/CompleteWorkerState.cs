@@ -18,7 +18,7 @@ namespace Gameplay.Worker.WorkerStates
         public void Enter()
         {
             _callback.Invoke();
-            _worker.SetState(typeof(IdleWorkerState));
+            _worker.SetState<IdleWorkerState>();
         }
 
         public void Exit()

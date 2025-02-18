@@ -19,7 +19,7 @@ namespace Gameplay.Worker.WorkerStates
                 .Subscribe(value =>
                 {
                     Debug.Log($"Добыто {value}");
-                    _worker.SetState(typeof(CarryWorkerState));
+                    _worker.SetState<CarryWorkerState>();
                 });
         }
 
