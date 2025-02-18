@@ -6,13 +6,10 @@ using UnityEngine;
 
 namespace Gameplay.GoldMine
 {
-    public interface IExtractable
+    public interface IExtractable : IWorkable
     {
-        Transform Transform { get; }
         ExtractableSO Info { get; }
-        bool IsEnded { get;  }
-        IObservable<Unit> OnEnded { get; }
-        IObservable<float> Extract(float amount, float extractionSpeed);
-       
+        
+        float Extract(float amount);
     }
 }

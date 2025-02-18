@@ -11,14 +11,14 @@ using Zenject;
 
 namespace Gameplay.Worker
 {
-    public class WorkerGO : MonoBehaviour
+    public class WorkerGO : MonoBehaviour, IWorker
     {
         private Dictionary<Type, IWorkerState> _states = new();
         [CanBeNull] private IWorkerState _currentState = null;
         private Subject<Unit> _extractionComplete = new Subject<Unit>();
         
         
-        [CanBeNull] public IExtractable Extractable { get; private set; }
+        [CanBeNull] public IWorkable Work { get; private set; }
         [CanBeNull] public IDestination Destination { get; private set; }
         public WorkerConfigSO Config { get; private set; }
 
@@ -53,12 +53,19 @@ namespace Gameplay.Worker
             }
         }
 
-        public IObservable<Unit> Extract(IExtractable extractable, IDestination destination)
+        public IObservable<Unit> StartExtractProcess(IExtractable extractable, IDestination destination)
         {
-            Extractable = extractable;
+            Work = extractable;
             Destination = destination;
             SetState(typeof(GoToExtractWorkerState));
             return _extractionComplete.AsObservable();
+        }
+
+        public IObservable<float> Extract(IExtractable extractable)
+        {
+            return Observable
+                .Timer(TimeSpan.FromSeconds(Config.ExtractSpeed))
+                .Select(value => extractable.Extract(Config.TakeAmount));
         }
     }
 }

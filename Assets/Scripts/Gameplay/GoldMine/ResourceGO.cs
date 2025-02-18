@@ -1,5 +1,6 @@
 ﻿using System;
 using Gameplay.GoldMine.Config;
+using Gameplay.Worker;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -53,7 +54,7 @@ namespace Gameplay.GoldMine
             _imageSpriteRenderer.sprite = Info.Image;
         }
         
-        private float DoExtraction(float amount)
+        public float Extract(float amount)
         {
             _currentResourceAmount -= amount;
             if (_currentResourceAmount == 0)
@@ -63,14 +64,10 @@ namespace Gameplay.GoldMine
             }
             return amount;
         }
-        
-        // TODO переделать через визитера или команду
-        public IObservable<float> Extract(float amount, float extractionSpeed)
+
+        public IObservable<float> DoWork(IWorker worker)
         {
-            return Observable
-                .Timer(TimeSpan.FromSeconds(extractionSpeed))
-                .Select(value => DoExtraction(amount));
+            return worker.Extract(this);
         }
-        
     }
 }

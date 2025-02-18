@@ -20,7 +20,7 @@ namespace Gameplay.Worker.Commands
         public IObservable<Unit> Execute(WorkerGO workerGo)
         {
             _workerGo = workerGo;
-            return _workerGo.Extract(_extractable, _destination);
+            return _workerGo.StartExtractProcess(_extractable, _destination);
         }
     }
 }

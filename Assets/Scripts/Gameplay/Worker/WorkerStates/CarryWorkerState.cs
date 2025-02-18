@@ -22,7 +22,7 @@ namespace Gameplay.Worker.WorkerStates
             _worker.transform.DOMove(_worker.Destination.Transform.position, duration)
                 .OnComplete(() =>
                 {
-                    if (_worker.Extractable.IsEnded)
+                    if (_worker.Work.IsEnded)
                     {
                         _worker.SetState(typeof(CompleteWorkerState));
                     }

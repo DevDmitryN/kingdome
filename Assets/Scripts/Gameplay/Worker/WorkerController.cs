@@ -68,12 +68,12 @@ namespace Gameplay.Worker
 
                 foreach (var extractable in resources)
                 {
-                    AddCommand(extractable);
+                    AddExtractCommand(extractable);
                 }
             }
         }
 
-        private void AddCommand(IExtractable extractable)
+        private void AddExtractCommand(IExtractable extractable)
         {
             if (_freeWorkers.TryGetValue(extractable.Info.ResourceType, out var freeWorkerStack))
             {

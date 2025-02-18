@@ -15,9 +15,9 @@ namespace Gameplay.Worker.WorkerStates
         public void Enter()
         {
          
-            var duration = Vector3.Distance(_worker.Extractable.Transform.position, _worker.transform.position) /
+            var duration = Vector3.Distance(_worker.Work.Transform.position, _worker.transform.position) /
                            _worker.Config.Speed;
-            _worker.transform.DOMove(_worker.Extractable.Transform.position, duration)
+            _worker.transform.DOMove(_worker.Work.Transform.position, duration)
                 .OnComplete(() =>
                 {
                     _worker.SetState(typeof(ExtractWorkerState));

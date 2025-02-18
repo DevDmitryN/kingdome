@@ -15,7 +15,7 @@ namespace Gameplay.Worker.WorkerStates
         
         public void Enter()
         {
-            _worker.Extractable.Extract(_worker.Config.TakeAmount, _worker.Config.ExtractSpeed)
+            _worker.Work.DoWork(_worker)
                 .Subscribe(value =>
                 {
                     Debug.Log($"Добыто {value}");
