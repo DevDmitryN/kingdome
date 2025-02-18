@@ -17,8 +17,8 @@ namespace Gameplay.Worker.WorkerStates
         
         public void Enter()
         {
-            var duration = Vector3.Distance(_worker.Destination.Transform.position, _worker.transform.position) /
-                           _worker.Config.Speed;
+            var distance = Vector3.Distance(_worker.Destination.Transform.position, _worker.transform.position);
+            var duration = distance / _worker.Config.Speed;
             _worker.transform.DOMove(_worker.Destination.Transform.position, duration)
                 .OnComplete(() =>
                 {
