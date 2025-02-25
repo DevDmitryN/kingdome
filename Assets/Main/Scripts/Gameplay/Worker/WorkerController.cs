@@ -19,7 +19,7 @@ namespace Gameplay.Worker
     {
         [Inject(Id = SpawnerType.Worker)] private readonly ISpawner<WorkerGO> _spawner;
         private readonly WorkerControllerConfig _config;
-        private readonly ResourceController _resourceController;
+        private readonly ResourceContainerController _resourceContainerController;
         private readonly IDestination _destination;
 
         private readonly Dictionary<ResourceType, List<WorkerGO>> _workers = new();
@@ -30,10 +30,10 @@ namespace Gameplay.Worker
 
         private Subject<Unit> _onDestroy = new();
 
-        WorkerController(WorkerControllerConfig config, ResourceController resourceController, IDestination destination)
+        WorkerController(WorkerControllerConfig config, ResourceContainerController resourceContainerController, IDestination destination)
         {
             _config = config;
-            _resourceController = resourceController;
+            _resourceContainerController = resourceContainerController;
             _destination = destination;
         }
 
@@ -61,7 +61,7 @@ namespace Gameplay.Worker
                 _workers.Add(spawnConfig.ResourceType, workers);
                 _freeWorkers.Add(spawnConfig.ResourceType, freeWorkers);
 
-                var resources = _resourceController
+                var resources = _resourceContainerController
                     .GetResources(spawnConfig.ResourceType)
                     .OrderBy(v => Vector3.Distance(v.Transform.position, _destination.Transform.position))
                     .ToList();

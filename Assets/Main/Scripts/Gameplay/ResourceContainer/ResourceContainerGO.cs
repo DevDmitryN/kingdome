@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Gameplay.GoldMine
 {
-    public class ResourceGO : MonoBehaviour, IExtractable
+    public class ResourceContainerGO : MonoBehaviour, IExtractable
     {
         #region SerializeField
 

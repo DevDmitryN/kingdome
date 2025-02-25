@@ -8,24 +8,24 @@ using Zenject;
 public class GameplayEntryPoint : MonoBehaviour
 {
     private readonly List<IDisposable> _disposables = new ();
-    private ResourceController _resourceController;
+    private ResourceContainerController _resourceContainerController;
     private WorkerController _workerController;
     
 
     [Inject]
-    public void Construct(ResourceController resourceController, WorkerController workerController)
+    public void Construct(ResourceContainerController resourceContainerController, WorkerController workerController)
     {
-        _resourceController = resourceController;
+        _resourceContainerController = resourceContainerController;
         _workerController = workerController;
         
-        _disposables.Add(_resourceController);
+        _disposables.Add(_resourceContainerController);
         _disposables.Add(_workerController);
     }
 
     private void Start()
     {
         Debug.Log("Entry point");
-        _resourceController.Init();
+        _resourceContainerController.Init();
         _workerController.Init();
     }
 

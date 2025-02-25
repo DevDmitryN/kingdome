@@ -3,7 +3,7 @@
 namespace Gameplay.GoldMine.Config
 {
     [Serializable]
-    public class ResourceSpawnConfig
+    public class ResourceContainerSpawnConfig
     {
         public ResourceType ResourceType;
         public int InitAmount;

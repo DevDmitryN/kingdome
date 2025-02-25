@@ -11,23 +11,23 @@ using Zenject;
 
 namespace Gameplay.GoldMine
 {
-    public class ResourceController : IDisposable
+    public class ResourceContainerController : IDisposable
     {
         [Inject(Id = SpawnerType.GoldMine)]
-        private ISpawner<ResourceGO> _goldMineSpawner;
+        private ISpawner<ResourceContainerGO> _goldMineSpawner;
         [Inject(Id = SpawnerType.Wood)]
-        private ISpawner<ResourceGO> _woodSpawner;
+        private ISpawner<ResourceContainerGO> _woodSpawner;
         
-        private readonly ResourceControllerConfig _config;
-        private readonly Dictionary<ResourceType, List<ResourceGO>> _resources = new ();
+        private readonly ResourceContainerControllerConfig _config;
+        private readonly Dictionary<ResourceType, List<ResourceContainerGO>> _resources = new ();
         private Subject<Unit> _onDestroy = new();
         
-        public ResourceController(ResourceControllerConfig config)
+        public ResourceContainerController(ResourceContainerControllerConfig config)
         {
             _config = config;
         }
 
-        private ISpawner<ResourceGO> GetSpawner(ResourceType resourceType)
+        private ISpawner<ResourceContainerGO> GetSpawner(ResourceType resourceType)
         {
             switch (resourceType)
             {
@@ -40,7 +40,7 @@ namespace Gameplay.GoldMine
             }
         }
 
-        private ResourceGO Spawn(ResourceType resourceType)
+        private ResourceContainerGO Spawn(ResourceType resourceType)
         {
             var position = RandomExtension.GenerateRandomCoordinates(_config.CenterPosition, _config.MinRadiusSpawn,_config.MaxRadiusSpawn);
             var spawner = GetSpawner(resourceType);
@@ -60,7 +60,7 @@ namespace Gameplay.GoldMine
             foreach (var spawnConfig in _config.SpawnConfigs)
             {
                 var resourceInitConfig = _config.GetSpawnConfig(spawnConfig.ResourceType);
-                var targetResources = new List<ResourceGO>();
+                var targetResources = new List<ResourceContainerGO>();
                 for (int i = 0; i < resourceInitConfig.InitAmount; i++)
                 {
                     targetResources.Add(Spawn(spawnConfig.ResourceType));
