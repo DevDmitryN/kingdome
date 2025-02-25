@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Main.Scripts.Gameplay.Features.GameResources.Enums;
+using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Gameplay.GoldMine.Config
+namespace Main.Scripts.Gameplay.Features.ResourceContainer.Config
 {
     [CreateAssetMenu(fileName = "Extractable config", menuName = "Gold Mine/Extractable config", order = 0)]
     public class ExtractableSO : ScriptableObject

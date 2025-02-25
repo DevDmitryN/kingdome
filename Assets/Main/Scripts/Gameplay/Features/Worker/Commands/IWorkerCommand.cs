@@ -1,8 +1,8 @@
 ﻿using System;
+using Gameplay.Worker;
 using UniRx;
 
-
-namespace Gameplay.Worker.Commands
+namespace Main.Scripts.Gameplay.Features.Worker.Commands
 {
     public interface IWorkerCommand
     {

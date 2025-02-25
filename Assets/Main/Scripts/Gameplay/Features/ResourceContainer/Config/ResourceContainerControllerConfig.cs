@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Main.Scripts.Gameplay.Features.GameResources.Enums;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Config;
 using UnityEngine;
 using UnityEngine.Serialization;
 

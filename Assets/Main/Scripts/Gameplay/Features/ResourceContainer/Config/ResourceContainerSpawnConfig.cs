@@ -1,7 +1,8 @@
 ﻿using System;
+using Main.Scripts.Gameplay.Features.GameResources.Enums;
 using UnityEngine.Serialization;
 
-namespace Gameplay.GoldMine.Config
+namespace Main.Scripts.Gameplay.Features.ResourceContainer.Config
 {
     [Serializable]
     public class ResourceContainerSpawnConfig

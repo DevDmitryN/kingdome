@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Extensions;
 using Extensions.Spawner;
+using Gameplay.GoldMine;
 using Gameplay.GoldMine.Config;
-using Gameplay.Installers.Tokens;
+using Main.Scripts.Gameplay.Features.GameResources.Enums;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Models;
+using Main.Scripts.Gameplay.Installers.Tokens;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
-namespace Gameplay.GoldMine
+namespace Main.Scripts.Gameplay.Features.ResourceContainer.Controller
 {
     public class ResourceContainerController : IDisposable
     {

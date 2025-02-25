@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172787941ddfc1b409dffbbecc8c3a40, type: 3}
-  m_Name: Resource Controller Config
+  m_Script: {fileID: 11500000, guid: a42e69510f32404d96d977a87c0bdaa8, type: 3}
+  m_Name: Game resources controller config
   m_EditorClassIdentifier: 
-  SpawnConfigs:
+  GameResources:
   - ResourceType: 0
-    InitAmount: 100
+    InitAmount: 10
   - ResourceType: 1
-    InitAmount: 100
-  CenterPosition: {x: 0, y: 0, z: 0}
-  MinRadiusSpawn: 3
-  MaxRadiusSpawn: 8
+    InitAmount: 10

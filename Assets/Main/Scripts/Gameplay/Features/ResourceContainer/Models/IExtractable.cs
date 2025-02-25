@@ -1,10 +1,8 @@
-﻿using System;
-using System.Numerics;
-using Gameplay.GoldMine.Config;
-using UniRx;
-using UnityEngine;
+﻿using Gameplay.GoldMine;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Config;
+using Main.Scripts.Gameplay.Features.Worker.Models;
 
-namespace Gameplay.GoldMine
+namespace Main.Scripts.Gameplay.Features.ResourceContainer.Models
 {
     public interface IExtractable : IWorkable
     {

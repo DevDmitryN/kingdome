@@ -1,9 +1,8 @@
 ﻿using System;
-using Gameplay.GoldMine;
-using UnityEngine;
+using Main.Scripts.Gameplay.Features.GameResources.Enums;
 using UnityEngine.Serialization;
 
-namespace Gameplay.Worker.Config
+namespace Main.Scripts.Gameplay.Features.Worker.Config
 {
     [Serializable]
     public class WorkerSpawnConfig

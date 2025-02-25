@@ -1,9 +1,10 @@
 ﻿using System;
 using Gameplay.Entities.Castle;
-using Gameplay.GoldMine;
+using Gameplay.Worker;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Models;
 using UniRx;
 
-namespace Gameplay.Worker.Commands
+namespace Main.Scripts.Gameplay.Features.Worker.Commands
 {
     public class ExtractWorkerCommand : IWorkerCommand
     {

@@ -1,9 +1,8 @@
 ﻿using System;
 using Gameplay.Worker;
-using UniRx;
 using UnityEngine;
 
-namespace Gameplay.GoldMine
+namespace Main.Scripts.Gameplay.Features.Worker.Models
 {
     public interface IWorkable
     {

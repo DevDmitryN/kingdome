@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gameplay.Worker.Config
+namespace Main.Scripts.Gameplay.Features.Worker.Config
 {
     [CreateAssetMenu(fileName = "Worker Controller Config", menuName = "Worker/Controller Config", order = 0)]
     public class WorkerControllerConfig : ScriptableObject

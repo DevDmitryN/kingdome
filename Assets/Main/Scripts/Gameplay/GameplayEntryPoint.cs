@@ -1,39 +1,54 @@
 using System;
 using System.Collections.Generic;
-using Gameplay.GoldMine;
-using Gameplay.Worker;
+using Main.Scripts.Gameplay.Features.GameResources.Controller;
+using Main.Scripts.Gameplay.Features.GameResources.UI;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Controller;
+using Main.Scripts.Gameplay.Features.Worker.Controller;
 using UnityEngine;
 using Zenject;
 
-public class GameplayEntryPoint : MonoBehaviour
+namespace Main.Scripts.Gameplay
 {
-    private readonly List<IDisposable> _disposables = new ();
-    private ResourceContainerController _resourceContainerController;
-    private WorkerController _workerController;
-    
-
-    [Inject]
-    public void Construct(ResourceContainerController resourceContainerController, WorkerController workerController)
+    public class GameplayEntryPoint : MonoBehaviour
     {
-        _resourceContainerController = resourceContainerController;
-        _workerController = workerController;
-        
-        _disposables.Add(_resourceContainerController);
-        _disposables.Add(_workerController);
-    }
+        private readonly List<IDisposable> _disposables = new ();
+        private ResourceContainerController _resourceContainerController;
+        private WorkerController _workerController;
+        private GameResourceController _gameResourceController;
+        private UIGameResourceList _uiGameResourceList;
 
-    private void Start()
-    {
-        Debug.Log("Entry point");
-        _resourceContainerController.Init();
-        _workerController.Init();
-    }
-
-    private void OnDestroy()
-    {
-        foreach (var disposable in _disposables)
+        [Inject]
+        public void Construct(
+            ResourceContainerController resourceContainerController, 
+            WorkerController workerController,
+            GameResourceController gameResourceController,
+            UIGameResourceList uiGameResourceList
+            )
         {
-            disposable.Dispose();
+            _resourceContainerController = resourceContainerController;
+            _workerController = workerController;
+            _gameResourceController = gameResourceController;
+            _uiGameResourceList = uiGameResourceList;
+        
+            _disposables.Add(_resourceContainerController);
+            _disposables.Add(_workerController);
+        }
+
+        private void Start()
+        {
+            Debug.Log("Entry point");
+            _resourceContainerController.Init();
+            _workerController.Init();
+            _gameResourceController.Init();
+            _uiGameResourceList.Init();
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var disposable in _disposables)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

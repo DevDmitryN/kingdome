@@ -1,4 +1,4 @@
-﻿namespace Gameplay.GoldMine
+﻿namespace Main.Scripts.Gameplay.Features.GameResources.Enums
 {
     public enum GameResourceType
     {

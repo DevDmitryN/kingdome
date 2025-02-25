@@ -1,17 +1,19 @@
-﻿using System;
-using Extensions.Spawner;
+﻿using Extensions.Spawner;
 using Extensions.Spawner.Mono;
 using Gameplay.Entities.Castle;
-using Gameplay.GoldMine;
 using Gameplay.GoldMine.Config;
-using Gameplay.Installers.Tokens;
 using Gameplay.Worker;
-using Gameplay.Worker.Config;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Config;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Controller;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Models;
+using Main.Scripts.Gameplay.Features.Worker.Config;
+using Main.Scripts.Gameplay.Features.Worker.Controller;
+using Main.Scripts.Gameplay.Installers.Tokens;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
 
-namespace Gameplay.Installers
+namespace Main.Scripts.Gameplay.Installers
 {
     public class GameplayInstaller : MonoInstaller
     {

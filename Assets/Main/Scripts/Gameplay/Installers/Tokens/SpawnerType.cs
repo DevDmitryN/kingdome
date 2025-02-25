@@ -1,4 +1,4 @@
-﻿namespace Gameplay.Installers.Tokens
+﻿namespace Main.Scripts.Gameplay.Installers.Tokens
 {
     public enum SpawnerType
     {

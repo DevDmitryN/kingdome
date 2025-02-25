@@ -1,12 +1,12 @@
 ﻿using System;
-using Gameplay.GoldMine.Config;
 using Gameplay.Worker;
+using Main.Scripts.Gameplay.Features.ResourceContainer.Config;
+using Main.Scripts.Gameplay.Features.Worker.Models;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
-namespace Gameplay.GoldMine
+namespace Main.Scripts.Gameplay.Features.ResourceContainer.Models
 {
     public class ResourceContainerGO : MonoBehaviour, IExtractable
     {
