@@ -1,6 +1,6 @@
 ﻿namespace Gameplay.GoldMine
 {
-    public enum ResourceType
+    public enum GameResourceType
     {
         Gold,
         Wood,

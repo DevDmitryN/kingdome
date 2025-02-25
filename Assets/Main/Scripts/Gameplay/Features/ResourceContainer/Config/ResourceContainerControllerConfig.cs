@@ -12,9 +12,9 @@ namespace Gameplay.GoldMine.Config
         public float MinRadiusSpawn;
         public float MaxRadiusSpawn;
 
-        public ResourceContainerSpawnConfig GetSpawnConfig(ResourceType resourceType)
+        public ResourceContainerSpawnConfig GetSpawnConfig(GameResourceType gameResourceType)
         {
-            return SpawnConfigs.Find(v => v.ResourceType == resourceType);
+            return SpawnConfigs.Find(v => v.gameResourceType == gameResourceType);
         }
     }
 }

@@ -22,9 +22,9 @@ namespace Gameplay.Worker
         private readonly ResourceContainerController _resourceContainerController;
         private readonly IDestination _destination;
 
-        private readonly Dictionary<ResourceType, List<WorkerGO>> _workers = new();
-        private readonly Dictionary<ResourceType, Stack<WorkerGO>> _freeWorkers = new();
-        private readonly  Dictionary<ResourceType,Queue<IWorkerCommand>> _workerCommandsQueue = new();
+        private readonly Dictionary<GameResourceType, List<WorkerGO>> _workers = new();
+        private readonly Dictionary<GameResourceType, Stack<WorkerGO>> _freeWorkers = new();
+        private readonly  Dictionary<GameResourceType,Queue<IWorkerCommand>> _workerCommandsQueue = new();
         private readonly List<IWorkerCommand> _activeWorkerCommands = new();
 
 
@@ -48,7 +48,7 @@ namespace Gameplay.Worker
         {
             foreach (var spawnConfig in _config.WorkerSpawnConfigs)
             {
-                _workerCommandsQueue.Add(spawnConfig.ResourceType, new Queue<IWorkerCommand>());
+                _workerCommandsQueue.Add(spawnConfig.gameResourceType, new Queue<IWorkerCommand>());
                 var workers = new List<WorkerGO>();
                 var freeWorkers = new Stack<WorkerGO>();
                 for (int i = 0; i < spawnConfig.InitAmount; i++)
@@ -58,11 +58,11 @@ namespace Gameplay.Worker
                     freeWorkers.Push(worker);
                 }
 
-                _workers.Add(spawnConfig.ResourceType, workers);
-                _freeWorkers.Add(spawnConfig.ResourceType, freeWorkers);
+                _workers.Add(spawnConfig.gameResourceType, workers);
+                _freeWorkers.Add(spawnConfig.gameResourceType, freeWorkers);
 
                 var resources = _resourceContainerController
-                    .GetResources(spawnConfig.ResourceType)
+                    .GetResources(spawnConfig.gameResourceType)
                     .OrderBy(v => Vector3.Distance(v.Transform.position, _destination.Transform.position))
                     .ToList();
 
@@ -75,24 +75,24 @@ namespace Gameplay.Worker
 
         private void AddExtractCommand(IExtractable extractable)
         {
-            if (_freeWorkers.TryGetValue(extractable.Info.ResourceType, out var freeWorkerStack))
+            if (_freeWorkers.TryGetValue(extractable.Info.gameResourceType, out var freeWorkerStack))
             {
                 var newCommand = new ExtractWorkerCommand(extractable, _destination);
                 
                 if (freeWorkerStack.IsEmpty())
                 {
-                    _workerCommandsQueue[extractable.Info.ResourceType].Enqueue(newCommand);
+                    _workerCommandsQueue[extractable.Info.gameResourceType].Enqueue(newCommand);
                 }
                 else
                 {
                     var worker = freeWorkerStack.Pop();
-                    var queue = _workerCommandsQueue[extractable.Info.ResourceType];
+                    var queue = _workerCommandsQueue[extractable.Info.gameResourceType];
                     RunCommand(queue, newCommand, worker);
                 }
             }
             else
             {
-                Debug.LogWarning($"Стек воркеров не найден для ресурса {extractable.Info.ResourceType}");
+                Debug.LogWarning($"Стек воркеров не найден для ресурса {extractable.Info.gameResourceType}");
             }
         }
 

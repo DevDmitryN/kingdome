@@ -19,7 +19,7 @@ namespace Gameplay.GoldMine
         private ISpawner<ResourceContainerGO> _woodSpawner;
         
         private readonly ResourceContainerControllerConfig _config;
-        private readonly Dictionary<ResourceType, List<ResourceContainerGO>> _resources = new ();
+        private readonly Dictionary<GameResourceType, List<ResourceContainerGO>> _resources = new ();
         private Subject<Unit> _onDestroy = new();
         
         public ResourceContainerController(ResourceContainerControllerConfig config)
@@ -27,23 +27,23 @@ namespace Gameplay.GoldMine
             _config = config;
         }
 
-        private ISpawner<ResourceContainerGO> GetSpawner(ResourceType resourceType)
+        private ISpawner<ResourceContainerGO> GetSpawner(GameResourceType gameResourceType)
         {
-            switch (resourceType)
+            switch (gameResourceType)
             {
-                case ResourceType.Gold:
+                case GameResourceType.Gold:
                     return _goldMineSpawner;
-                case ResourceType.Wood:
+                case GameResourceType.Wood:
                     return _woodSpawner;
                 default:
-                    throw new Exception($"Свапнер для типа {resourceType} не найден");
+                    throw new Exception($"Свапнер для типа {gameResourceType} не найден");
             }
         }
 
-        private ResourceContainerGO Spawn(ResourceType resourceType)
+        private ResourceContainerGO Spawn(GameResourceType gameResourceType)
         {
             var position = RandomExtension.GenerateRandomCoordinates(_config.CenterPosition, _config.MinRadiusSpawn,_config.MaxRadiusSpawn);
-            var spawner = GetSpawner(resourceType);
+            var spawner = GetSpawner(gameResourceType);
             var item = spawner.Spawn(position);
             item.OnEnded
                 .First()
@@ -59,13 +59,13 @@ namespace Gameplay.GoldMine
         {
             foreach (var spawnConfig in _config.SpawnConfigs)
             {
-                var resourceInitConfig = _config.GetSpawnConfig(spawnConfig.ResourceType);
+                var resourceInitConfig = _config.GetSpawnConfig(spawnConfig.gameResourceType);
                 var targetResources = new List<ResourceContainerGO>();
                 for (int i = 0; i < resourceInitConfig.InitAmount; i++)
                 {
-                    targetResources.Add(Spawn(spawnConfig.ResourceType));
+                    targetResources.Add(Spawn(spawnConfig.gameResourceType));
                 }
-                _resources.Add(spawnConfig.ResourceType, targetResources);
+                _resources.Add(spawnConfig.gameResourceType, targetResources);
             }
         }
         
@@ -81,10 +81,10 @@ namespace Gameplay.GoldMine
             InitResources();
         }
 
-        public List<IExtractable> GetResources(ResourceType resourceType)
+        public List<IExtractable> GetResources(GameResourceType gameResourceType)
         {
-            return _resources[resourceType]
-                .Where(v => v.Info.ResourceType == resourceType)
+            return _resources[gameResourceType]
+                .Where(v => v.Info.gameResourceType == gameResourceType)
                 .Select(v => (IExtractable) v)
                 .ToList();
         }

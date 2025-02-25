@@ -1,13 +1,14 @@
 ﻿using System;
 using Gameplay.GoldMine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Worker.Config
 {
     [Serializable]
     public class WorkerSpawnConfig
     {
-        public ResourceType ResourceType;
+        [FormerlySerializedAs("ResourceType")] public GameResourceType gameResourceType;
         public int InitAmount;
     }
 }
