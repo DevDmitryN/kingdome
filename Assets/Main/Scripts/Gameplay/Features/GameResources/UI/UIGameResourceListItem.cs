@@ -1,4 +1,5 @@
-﻿using Main.Scripts.Gameplay.Features.GameResources.Config;
+﻿using System;
+using Main.Scripts.Gameplay.Features.GameResources.Config;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,10 +10,16 @@ namespace Main.Scripts.Gameplay.Features.GameResources.UI
     {
         [SerializeField] private Image _image;
         [SerializeField] private TextMeshProUGUI _amountText;
+        private RectTransform _rectTransform;
         
         private GameResourceConfig _config;
 
-        public void SetConfig(GameResourceConfig config)
+        private void Awake()
+        {
+            _rectTransform = GetComponent<RectTransform>();
+        }
+
+        public UIGameResourceListItem SetConfig(GameResourceConfig config)
         {
             _config = config;
 
@@ -22,6 +29,7 @@ namespace Main.Scripts.Gameplay.Features.GameResources.UI
             }
            
             _amountText.text = config.InitAmount.ToString();
+            return this;
         }
     }
 }

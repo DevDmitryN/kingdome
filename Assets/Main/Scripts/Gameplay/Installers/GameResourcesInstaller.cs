@@ -7,6 +7,7 @@ namespace Main.Scripts.Gameplay.Installers
 {
     public class GameResourcesInstaller : MonoInstaller
     {
+        public UIGameResourceList UIGameResourceList;
         public UIGameResourceListItem UIResourceItemPrefab;
         public GameResourceControllerConfig GameResourceControllerConfig;
         
@@ -15,16 +16,16 @@ namespace Main.Scripts.Gameplay.Installers
             Container.Bind<GameResourceControllerConfig>()
                 .FromInstance(GameResourceControllerConfig)
                 .AsSingle();
-
-            // Container.InstantiatePrefab(UIResourceItemPrefab);
-
+            
+            Container.Bind<GameResourceController>()
+                .AsSingle();
+            
             Container.Bind<UIGameResourceListItem>()
                 .FromInstance(UIResourceItemPrefab)
                 .AsSingle();
             
-            Container.Bind<GameResourceController>()
-                .AsSingle();
             Container.Bind<UIGameResourceList>()
+                .FromInstance(UIGameResourceList)
                 .AsSingle();
         }
     }
