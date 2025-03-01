@@ -22,6 +22,7 @@ namespace Gameplay.Worker.WorkerStates
             _worker.transform.DOMove(_worker.Destination.Transform.position, duration)
                 .OnComplete(() =>
                 {
+                    _worker.Destination.AcceptWorker(_worker);
                     if (_worker.Work.IsEnded)
                     {
                         _worker.SetState<CompleteWorkerState>();

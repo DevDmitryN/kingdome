@@ -10,19 +10,9 @@ namespace Main.Scripts.Gameplay.Features.GameResources.UI
     {
         [SerializeField] private Image _image;
         [SerializeField] private TextMeshProUGUI _amountText;
-        private RectTransform _rectTransform;
-        
-        private GameResourceConfig _config;
-
-        private void Awake()
-        {
-            _rectTransform = GetComponent<RectTransform>();
-        }
 
         public UIGameResourceListItem SetConfig(GameResourceConfig config)
         {
-            _config = config;
-
             if (config.Image != null)
             {
                 _image.sprite = config.Image;
@@ -30,6 +20,11 @@ namespace Main.Scripts.Gameplay.Features.GameResources.UI
            
             _amountText.text = config.InitAmount.ToString();
             return this;
+        }
+
+        public void SetValue(float value)
+        {
+            _amountText.text = value.ToString();
         }
     }
 }

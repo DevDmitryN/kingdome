@@ -18,9 +18,8 @@ namespace Gameplay.Worker
     {
         private IStateSwitcher _stateSwitcher;
         [CanBeNull] private IWorkerState _currentState = null;
-        private Subject<Unit> _extractionComplete = new Subject<Unit>();
-        
-        
+        private Subject<Unit> _workComplete = new Subject<Unit>();
+        [CanBeNull] public WorkExtractedInfo ExtractedInfo { get; private set; }
         [CanBeNull] public IWorkable Work { get; private set; }
         [CanBeNull] public IDestination Destination { get; private set; }
         public WorkerConfigSO Config { get; private set; }
@@ -36,7 +35,7 @@ namespace Gameplay.Worker
                 new GoToExtractWorkerState(this),
                 new ExtractWorkerState(this),
                 new CarryWorkerState(this),
-                new CompleteWorkerState(this, () => _extractionComplete.OnNext(Unit.Default))
+                new CompleteWorkerState(this, () => _workComplete.OnNext(Unit.Default))
             });
         }
         
@@ -54,8 +53,13 @@ namespace Gameplay.Worker
         {
             Work = extractable;
             Destination = destination;
+            ExtractedInfo = new WorkExtractedInfo()
+            {
+                ResourceType = extractable.Info.gameResourceType, 
+                ExtractValue = 0
+            };
             SetState<GoToExtractWorkerState>();
-            return _extractionComplete.AsObservable();
+            return _workComplete.AsObservable();
         }
 
         public IObservable<float> Extract(IExtractable extractable)
@@ -63,6 +67,19 @@ namespace Gameplay.Worker
             return Observable
                 .Timer(TimeSpan.FromSeconds(Config.ExtractSpeed))
                 .Select(value => extractable.Extract(Config.TakeAmount));
+        }
+
+        public void AddExtractionValue(float value)
+        {
+            if (ExtractedInfo != null)
+            {
+                ExtractedInfo.ExtractValue += value;
+            }
+            else
+            {
+                Debug.LogWarning("Поле ExtractedInfo не задано!");
+            }
+           
         }
     }
 }

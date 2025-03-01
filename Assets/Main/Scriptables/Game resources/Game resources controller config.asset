@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameResources:
   - ResourceType: 0
+    Image: {fileID: 2000918236, guid: 2f0746d0d60330a4398776f00d5cf0e8, type: 3}
     InitAmount: 10
   - ResourceType: 1
+    Image: {fileID: -1200512477929288795, guid: f2b4a92bfefb49148a7ccbb3374c3577, type: 3}
     InitAmount: 10
