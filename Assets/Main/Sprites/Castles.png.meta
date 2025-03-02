@@ -283,7 +283,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Castles_0: 3034646816084357005
+      Castles_1: -8860916142653427770
+      Castles_2: 2993974377349551562
+      Castles_3: -6382607213147770759
+      Castles_4: 1654897096642300526
+      Castles_5: -1350331532839194127
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
