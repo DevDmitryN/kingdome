@@ -5,5 +5,6 @@
         GoldMine,
         Wood,
         Worker,
+        Building,
     }
 }

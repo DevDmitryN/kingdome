@@ -18,7 +18,6 @@ namespace Gameplay.Worker.WorkerStates
             _worker.Work.DoWork(_worker)
                 .Subscribe(value =>
                 {
-                    Debug.Log($"Добыто {value}");
                     _worker.AddExtractionValue(value);
                     _worker.SetState<CarryWorkerState>();
                 });

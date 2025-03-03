@@ -1,32 +1,47 @@
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace Main.Scripts.Gameplay.Features.Building  
+namespace Main.Scripts.Gameplay.Features.Building
 {
     public class BuildingUIList : MonoBehaviour
     {
-       [Inject] private BuildingListConfig _config;
-       [Inject] private BuildingUIListItem _itemPrefab;
+        [Inject] private BuildingListConfig _config;
+        [Inject] private BuildingUIListItem _itemPrefab;
+        [Inject] private BuildingController _controller;
 
-       private List<BuildingUIListItem> _uiItems = new ();
+        private List<BuildingUIListItem> _uiItems = new();
 
-       public void Init() 
-       {
+        public void Init()
+        {
             CreateListItems();
-       }
+        }
 
-       private void CreateListItems()
+        private void CreateListItems()
         {
             foreach (var config in _config.BuildngConfigs)
             {
-                var listItem = Instantiate(_itemPrefab, transform)
-                    .SetImage(config.Sprite)
-                    .SetName(config.Name);
-
+                var listItem = CreateItem(config);
                 _uiItems.Add(listItem);
             }
         }
+
+        private BuildingUIListItem CreateItem(BuildingConfig config)
+        {
+            var listItem = Instantiate(_itemPrefab, transform)
+                               .SetImage(config.Sprite)
+                               .SetName(config.Name);
+
+            listItem.OnSelect
+                .TakeUntilDestroy(this)
+                .Subscribe(value => {
+                    _controller.StartBuilding(config);
+                });
+
+            return listItem;
+        }
+
     }
 
 }

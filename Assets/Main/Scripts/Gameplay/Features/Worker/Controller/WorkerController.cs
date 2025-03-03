@@ -101,7 +101,6 @@ namespace Main.Scripts.Gameplay.Features.Worker.Controller
 
         private void RunCommand(Queue<IWorkerCommand> queue, IWorkerCommand command, WorkerGO worker)
         {
-            Debug.Log("Следующая команда");
             command.Execute(worker)
                 .First()
                 .TakeUntil(_onDestroy)
