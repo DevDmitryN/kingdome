@@ -18,3 +18,4 @@ MonoBehaviour:
   BuildResourceConditions:
   - ResourceType: 0
     RequiredValue: 30
+  strategySo: {fileID: 11400000, guid: c15e933235fc61349b8c473837af5664, type: 2}

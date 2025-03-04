@@ -13,39 +13,22 @@ namespace Main.Scripts.Gameplay
     public class GameplayEntryPoint : MonoBehaviour
     {
         private readonly List<IDisposable> _disposables = new ();
-        private ResourceContainerController _resourceContainerController;
-        private WorkerController _workerController;
-        private GameResourceController _gameResourceController;
-        private UIGameResourceList _uiGameResourceList;
-        private BuildingUIList _buildingUIList;
-
-        [Inject]
-        public void Construct(
-            ResourceContainerController resourceContainerController, 
-            WorkerController workerController,
-            GameResourceController gameResourceController,
-            UIGameResourceList uiGameResourceList,
-            BuildingUIList buildingUIList
-            )
-        {
-            _resourceContainerController = resourceContainerController;
-            _workerController = workerController;
-            _gameResourceController = gameResourceController;
-            _uiGameResourceList = uiGameResourceList;
-            _buildingUIList = buildingUIList;
+        [Inject] private ResourceContainerController _resourceContainerController;
+        [Inject] private WorkerController _workerController;
+        [Inject] private GameResourceController _gameResourceController;
+        [Inject] private UIGameResourceList _uiGameResourceList;
+        [Inject] private BuildingUIList _buildingUIList;
         
-            _disposables.Add(_resourceContainerController);
-            _disposables.Add(_workerController);
-        }
-
         private void Start()
         {
-            Debug.Log("Entry point");
             _resourceContainerController.Init();
             _workerController.Init();
             _gameResourceController.Init();
             _uiGameResourceList.Init();
             _buildingUIList.Init();
+            
+            _disposables.Add(_resourceContainerController);
+            _disposables.Add(_workerController);
         }
 
         private void OnDestroy()
