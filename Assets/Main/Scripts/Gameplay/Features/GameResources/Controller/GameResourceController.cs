@@ -44,5 +44,19 @@ namespace Main.Scripts.Gameplay.Features.GameResources.Controller
                 });
             }
         }
+        
+        public void ReduceResource(ReduceResourceParams paramsToChange)
+        {
+            if (_resourceState.AddAmount(paramsToChange.Type, -paramsToChange.Value, out var stateValue))
+            {
+                _resourceAmountChanged.OnNext(new ()
+                {
+                    Type = paramsToChange.Type,
+                    ChangeValue = -paramsToChange.Value,
+                    NewValue = stateValue.CurrentValue,
+                    PrevValue = stateValue.PrevValue,
+                });
+            }
+        }
     }
 }

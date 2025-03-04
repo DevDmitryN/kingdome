@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using Extensions.Spawner;
+using Main.Scripts.Gameplay.Features.GameResources.Controller;
 using Main.Scripts.Gameplay.Installers.Tokens;
 using UniRx;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Main.Scripts.Gameplay.Features.Building
         [Inject(Id = SpawnerType.BuildingPreview)] private ISpawner<BuildingPreviewMono> _previewSpawner;
         [Inject(Id = SpawnerType.Building)] private ISpawner<BuildingMono> _buildingSpawner;
         [Inject] private BuildProcess _builderProcess;
+        [Inject] private GameResourceController _resourceController;
 
         public void StartBuilding(BuildingConfig buildingConfig) 
         {
@@ -24,13 +26,21 @@ namespace Main.Scripts.Gameplay.Features.Building
                 .Subscribe(result =>
                 {
                     Object.Destroy(buildingPreview.gameObject);
-                    _buildingSpawner.Spawn(result.Position, new List<object>() { buildingConfig });
+                    Build(result, buildingConfig);
                 });
         }
 
-        public void Tick()
+        private void Build(BuildProcessResult buildProcessResult, BuildingConfig config)
         {
-            Debug.Log("Tick");
+            _buildingSpawner.Spawn(buildProcessResult.Position, new List<object>() { config });
+            foreach (var condition in config.BuildResourceConditions)
+            {
+                _resourceController.ReduceResource(new ()
+                {
+                    Type = condition.ResourceType,
+                    Value = condition.RequiredValue,
+                });
+            }
         }
     }
 }
