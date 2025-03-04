@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Main.Scripts.Gameplay.Features.GameResources.Config;
 using Main.Scripts.Gameplay.Features.GameResources.Models;
 using Main.Scripts.Gameplay.Features.GameResources.Models.Events;
@@ -19,6 +20,8 @@ namespace Main.Scripts.Gameplay.Features.GameResources.Controller
         public IObservable<ResourceAmountChanged> ResourceAmountChangedEvent => _resourceAmountChanged
             .Where(v => v != null)
             .AsObservable();
+
+        public List<GameResourceState.IGameResourceStateValue> CurrentState => _resourceState.GetState();
 
         public void Init()
         {

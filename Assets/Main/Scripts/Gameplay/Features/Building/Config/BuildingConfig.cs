@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Main.Scripts.Gameplay.Features.Building;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Main.Scripts.Gameplay.Features.Building {
         public string Name;
         public Sprite Sprite;
         public BuildingType Type;
+        public List<BuildResourceCondition> BuildResourceConditions;
     }
 }
 

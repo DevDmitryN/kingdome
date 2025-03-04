@@ -15,3 +15,6 @@ MonoBehaviour:
   Name: Tower
   Sprite: {fileID: -1515134823594722529, guid: 03de6165c57333546aa59de19789e3c0, type: 3}
   Type: 0
+  BuildResourceConditions:
+  - ResourceType: 0
+    RequiredValue: 30
