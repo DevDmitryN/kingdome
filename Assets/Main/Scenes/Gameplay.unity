@@ -179,6 +179,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 665616128}
+  - {fileID: 917463045}
+  - {fileID: 607250427}
   m_Father: {fileID: 1565261988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &220102845
@@ -278,6 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9fa0acdd5c4264b685443fcab343bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainCamera: {fileID: 519420031}
   resourceContainerGo: {fileID: 3283603069695337175, guid: 5921d9d3ff9cf2b4e8d8dc9f8ea38751, type: 3}
   _goldMineFolder: {fileID: 178383373}
   _goldMineConfig: {fileID: 11400000, guid: 5310c3fff356d954e8c5e2cc309c0e34, type: 2}
@@ -440,6 +443,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &607250425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 607250427}
+  - component: {fileID: 607250426}
+  m_Layer: 0
+  m_Name: Builder Process
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &607250426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607250425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255c83278fee4fd79aa91717e74c4573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &607250427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607250425}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 213966987}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &665616127
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +603,7 @@ MonoBehaviour:
   BuildingsFolder: {fileID: 917463045}
   BuildingPreviewPrefab: {fileID: 5114150514102693307, guid: 7230103b7147d164bb3238470bba32e4, type: 3}
   BuildingsPreviewFolder: {fileID: 665616128}
+  BuildProcessScript: {fileID: 607250426}
 --- !u!1 &917463044
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,7 +614,7 @@ GameObject:
   m_Component:
   - component: {fileID: 917463045}
   m_Layer: 0
-  m_Name: Towers
+  m_Name: Buildings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -580,12 +628,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917463044}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1565261988}
+  m_Father: {fileID: 213966987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &979509894
 GameObject:
@@ -1005,7 +1053,6 @@ Transform:
   - {fileID: 1836143151}
   - {fileID: 178383373}
   - {fileID: 1617766100}
-  - {fileID: 917463045}
   - {fileID: 213966987}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
