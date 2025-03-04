@@ -6,5 +6,6 @@
         Wood,
         Worker,
         Building,
+        BuildingPreview,
     }
 }

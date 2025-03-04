@@ -13,11 +13,18 @@ namespace Main.Scripts.Gameplay.Installers
 {
     public class BuildingInstaller : MonoInstaller
     {
+        public BuildingListConfig buildingListConfig;
+        [Header("UI")]
         public BuildingUIList UiBildingList;
         public BuildingUIListItem UiBuildingPrefab;
+        [Header("After Build")]
         public BuildingMono BuildingPrefab;
         public Transform BuildingsFolder;
-        public BuildingListConfig buildingListConfig;
+        [Header("Build process")]
+        public BuildingPreviewMono BuildingPreviewPrefab;
+        public Transform BuildingsPreviewFolder;
+        public BuildProcessMono BuildProcessScript;
+       
         
         public override void InstallBindings()
         {
@@ -26,6 +33,12 @@ namespace Main.Scripts.Gameplay.Installers
                 .To<SimpleDiSpawner<BuildingMono>>()
                 .AsCached()
                 .WithArguments(BuildingPrefab, BuildingsFolder);
+            
+            Container.Bind<ISpawner<BuildingPreviewMono>>()
+                .WithId(SpawnerType.BuildingPreview)
+                .To<SimpleDiSpawner<BuildingPreviewMono>>()
+                .AsCached()
+                .WithArguments(BuildingPreviewPrefab, BuildingsPreviewFolder);
 
             Container.Bind<BuildingListConfig>()
                 .FromInstance(buildingListConfig)
@@ -33,6 +46,10 @@ namespace Main.Scripts.Gameplay.Installers
             
             Container.Bind<BuildingMono>()
                 .FromInstance(BuildingPrefab)
+                .AsSingle();
+            
+            Container.Bind<BuildingPreviewMono>()
+                .FromInstance(BuildingPreviewPrefab)
                 .AsSingle();
         
             Container.Bind<BuildingUIListItem>()
@@ -46,7 +63,9 @@ namespace Main.Scripts.Gameplay.Installers
             Container.Bind<BuildingController>()
                 .AsSingle();
 
-           
+            Container.Bind<BuildProcessMono>()
+                .FromInstance(BuildProcessScript)
+                .AsSingle();
         }
     }
 }
