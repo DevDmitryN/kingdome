@@ -1,6 +1,7 @@
 ﻿using Extensions.Spawner;
 using Extensions.Spawner.Mono;
 using Main.Scripts.Gameplay.Features.Building;
+using Main.Scripts.Gameplay.Features.Building.Factory;
 using Main.Scripts.Gameplay.Features.GameResources.Config;
 using Main.Scripts.Gameplay.Features.GameResources.Controller;
 using Main.Scripts.Gameplay.Features.GameResources.UI;
@@ -13,7 +14,9 @@ namespace Main.Scripts.Gameplay.Installers
 {
     public class BuildingInstaller : MonoInstaller
     {
+        [Header("Common")]
         public BuildingListConfig buildingListConfig;
+        public CommonBuildConfig CommonBuildConfig;
         [Header("UI")]
         public BuildingUIList UiBildingList;
         public BuildingUIListItem UiBuildingPrefab;
@@ -23,7 +26,7 @@ namespace Main.Scripts.Gameplay.Installers
         [Header("Build process")]
         public BuildingPreviewMono BuildingPreviewPrefab;
         public Transform BuildingsPreviewFolder;
-        public BuildProcessMono BuildProcessScript;
+        // public BuildProcessMono BuildProcessScript;
        
         
         public override void InstallBindings()
@@ -44,6 +47,10 @@ namespace Main.Scripts.Gameplay.Installers
                 .FromInstance(buildingListConfig)
                 .AsSingle();
             
+            Container.Bind<CommonBuildConfig>()
+                .FromInstance(CommonBuildConfig)
+                .AsSingle();
+            
             Container.Bind<BuildingMono>()
                 .FromInstance(BuildingPrefab)
                 .AsSingle();
@@ -55,6 +62,10 @@ namespace Main.Scripts.Gameplay.Installers
             Container.Bind<BuildingUIListItem>()
                 .FromInstance(UiBuildingPrefab)
                 .AsSingle();
+
+            Container.Bind<IBuildingListItemFactory>()
+                .To<CommonBuildingListItemFactory>()
+                .AsSingle();
             
             Container.Bind<BuildingUIList>()
                 .FromInstance(UiBildingList)
@@ -63,8 +74,8 @@ namespace Main.Scripts.Gameplay.Installers
             Container.Bind<BuildingController>()
                 .AsSingle();
 
-            Container.Bind<BuildProcessMono>()
-                .FromInstance(BuildProcessScript)
+            Container.Bind(typeof(ITickable), typeof(BuildProcess))
+                .To<BuildProcess>()
                 .AsSingle();
         }
     }

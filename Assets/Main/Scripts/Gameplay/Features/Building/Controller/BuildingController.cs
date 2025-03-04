@@ -9,11 +9,11 @@ using Zenject;
 
 namespace Main.Scripts.Gameplay.Features.Building
 {
-    public class BuildingController 
+    public class BuildingController
     {
         [Inject(Id = SpawnerType.BuildingPreview)] private ISpawner<BuildingPreviewMono> _previewSpawner;
         [Inject(Id = SpawnerType.Building)] private ISpawner<BuildingMono> _buildingSpawner;
-        [Inject] private BuildProcessMono _builderProcess;
+        [Inject] private BuildProcess _builderProcess;
 
         public void StartBuilding(BuildingConfig buildingConfig) 
         {
@@ -26,6 +26,11 @@ namespace Main.Scripts.Gameplay.Features.Building
                     Object.Destroy(buildingPreview.gameObject);
                     _buildingSpawner.Spawn(result.Position, new List<object>() { buildingConfig });
                 });
+        }
+
+        public void Tick()
+        {
+            Debug.Log("Tick");
         }
     }
 }

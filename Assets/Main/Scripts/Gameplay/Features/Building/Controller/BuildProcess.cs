@@ -14,7 +14,7 @@ namespace Main.Scripts.Gameplay.Features.Building
         public BuildingPreviewMono Preview;
     }
     
-    public class BuildProcessMono : MonoBehaviour
+    public class BuildProcess : ITickable
     {
         [Inject] private IInputService _inputService;
         
@@ -27,7 +27,7 @@ namespace Main.Scripts.Gameplay.Features.Building
             return _buildFinishedEvent.AsObservable();
         }
 
-        private void Update()
+        public void Tick()
         {
             if (_item == null) 
                 return;
@@ -37,11 +37,11 @@ namespace Main.Scripts.Gameplay.Features.Building
             if (_inputService.IsClicked)
             {
                 _buildFinishedEvent.OnNext(
-                new (){
-                    IsBuild = true,
-                    Position = _item.transform.position,
-                    Preview = _item
-                });
+                    new (){
+                        IsBuild = true,
+                        Position = _item.transform.position,
+                        Preview = _item
+                    });
                 _item = null;
             }
         }

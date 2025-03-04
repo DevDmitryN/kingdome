@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bbacd554efab2949ad5b18c763263b7, type: 3}
-  m_Name: Building list config
+  m_Script: {fileID: 11500000, guid: 8d1ab959270a4026a77f010cb156ef76, type: 3}
+  m_Name: Common build config
   m_EditorClassIdentifier: 
-  DisabledColor: {r: 0.6698113, g: 0, b: 0, a: 0.4745098}
-  BuildngConfigs:
-  - {fileID: 11400000, guid: e38f46e58e5d429459a462c5303ddff1, type: 2}
+  DisabledColor: {r: 0, g: 0, b: 0, a: 0.6392157}
