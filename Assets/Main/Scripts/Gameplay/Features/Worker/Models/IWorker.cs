@@ -7,5 +7,6 @@ namespace Main.Scripts.Gameplay.Features.Worker.Models
     {
         IObservable<float> Extract(IExtractable extractable);
         WorkExtractedInfo ExtractedInfo { get; }
+        WorkExtractedInfo returnExtractedData();
     }
 }

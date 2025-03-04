@@ -81,5 +81,16 @@ namespace Gameplay.Worker
             }
            
         }
+
+        public WorkExtractedInfo returnExtractedData()
+        {
+            var info = new WorkExtractedInfo()
+            {
+                ResourceType = ExtractedInfo.ResourceType,
+                ExtractValue = ExtractedInfo.ExtractValue
+            };
+            ExtractedInfo.ExtractValue = 0;
+            return info;
+        }
     }
 }

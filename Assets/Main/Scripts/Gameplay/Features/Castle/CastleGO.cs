@@ -14,7 +14,7 @@ namespace Gameplay.Entities.Castle
 
         public void AcceptWorker(IWorker worker)
         {
-            var data = worker.ExtractedInfo;
+            var data = worker.returnExtractedData();
             _resourceController.AddResource(new ()
             {
                 Type = data.ResourceType,
