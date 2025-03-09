@@ -1,7 +1,9 @@
 
 
 using System.Collections.Generic;
+using System.Linq;
 using Extensions.Spawner;
+using Main.Scripts.Gameplay.Features.Building.Factory;
 using Main.Scripts.Gameplay.Features.GameResources.Controller;
 using Main.Scripts.Gameplay.Installers.Tokens;
 using UniRx;
@@ -13,9 +15,24 @@ namespace Main.Scripts.Gameplay.Features.Building
     public class BuildingController
     {
         [Inject(Id = SpawnerType.BuildingPreview)] private ISpawner<BuildingPreviewMono> _previewSpawner;
-        [Inject(Id = SpawnerType.Building)] private ISpawner<BuildingMono> _buildingSpawner;
+        [Inject] private BuildingListConfig _buildingListConfig;
+        [Inject] private IBuildingFactory _buildingFactory;
         [Inject] private BuildProcess _builderProcess;
         [Inject] private GameResourceController _resourceController;
+
+        private List<BuildingMono> _buildings = new ();
+
+        public void Init() 
+        {
+            var buildOnStartup = _buildingListConfig.BuildngConfigs
+                .Where(v => v.CreateOnStartup)
+                .ToList();
+
+            foreach (var item in buildOnStartup)
+            {
+                Build(item.StartupBuildingConfig.StartPosition, item);
+            }
+        }
 
         public void StartBuilding(BuildingConfig buildingConfig) 
         {
@@ -26,21 +43,19 @@ namespace Main.Scripts.Gameplay.Features.Building
                 .Subscribe(result =>
                 {
                     Object.Destroy(buildingPreview.gameObject);
-                    Build(result, buildingConfig);
+                    Build(result.Position, buildingConfig);
                 });
         }
 
-        private void Build(BuildProcessResult buildProcessResult, BuildingConfig config)
+        private void Build(Vector3 position, BuildingConfig config)
         {
-            _buildingSpawner.Spawn(buildProcessResult.Position, new List<object>() { config });
-            foreach (var condition in config.BuildResourceConditions)
-            {
-                _resourceController.ReduceResource(new ()
-                {
-                    Type = condition.ResourceType,
-                    Value = condition.RequiredValue,
-                });
-            }
+            var item = _buildingFactory.Create(position, config);
+            _buildings.Add(item);
+        }
+
+        public List<BuildingMono> GetBuildingByType(BuildingType type) 
+        {
+            return _buildings.Where(v => v.Config.Type == type).ToList();
         }
     }
 }

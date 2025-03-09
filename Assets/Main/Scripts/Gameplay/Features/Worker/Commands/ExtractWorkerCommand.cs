@@ -1,7 +1,9 @@
 ﻿using System;
 using Gameplay.Entities.Castle;
 using Gameplay.Worker;
+using Main.Scripts.Gameplay.Features.Building;
 using Main.Scripts.Gameplay.Features.ResourceContainer.Models;
+using Main.Scripts.Gameplay.Features.WorkerAcceptor;
 using UniRx;
 
 namespace Main.Scripts.Gameplay.Features.Worker.Commands
@@ -10,18 +12,18 @@ namespace Main.Scripts.Gameplay.Features.Worker.Commands
     {
         private WorkerGO _workerGo;
         private readonly IExtractable _extractable;
-        private readonly IDestination _destination;
+        private readonly IWorkerAcceptor _acceptor;
 
-        public ExtractWorkerCommand(IExtractable extractable, IDestination destination)
+        public ExtractWorkerCommand(IExtractable extractable, IWorkerAcceptor destination)
         {
             _extractable = extractable;
-            _destination = destination;
+            _acceptor = destination;
         }
 
         public IObservable<Unit> Execute(WorkerGO workerGo)
         {
             _workerGo = workerGo;
-            return _workerGo.StartExtractProcess(_extractable, _destination);
+            return _workerGo.StartExtractProcess(_extractable, _acceptor);
         }
     }
 }

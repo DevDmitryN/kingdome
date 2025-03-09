@@ -5,11 +5,14 @@ using _Project.Scripts.Extensions;
 using Extensions.Spawner;
 using Gameplay.Entities.Castle;
 using Gameplay.Worker;
+using Main.Scripts.Gameplay.Features.Building;
 using Main.Scripts.Gameplay.Features.GameResources.Enums;
 using Main.Scripts.Gameplay.Features.ResourceContainer.Controller;
 using Main.Scripts.Gameplay.Features.ResourceContainer.Models;
 using Main.Scripts.Gameplay.Features.Worker.Commands;
 using Main.Scripts.Gameplay.Features.Worker.Config;
+using Main.Scripts.Gameplay.Features.Worker.Models;
+using Main.Scripts.Gameplay.Features.WorkerAcceptor;
 using Main.Scripts.Gameplay.Installers.Tokens;
 using ModestTree;
 using UniRx;
@@ -21,9 +24,9 @@ namespace Main.Scripts.Gameplay.Features.Worker.Controller
     public class WorkerController : IDisposable
     {
         [Inject(Id = SpawnerType.Worker)] private readonly ISpawner<WorkerGO> _spawner;
+        [Inject] private BuildingController _buildingController;
         private readonly WorkerControllerConfig _config;
         private readonly ResourceContainerController _resourceContainerController;
-        private readonly IDestination _destination;
 
         private readonly Dictionary<GameResourceType, List<WorkerGO>> _workers = new();
         private readonly Dictionary<GameResourceType, Stack<WorkerGO>> _freeWorkers = new();
@@ -33,11 +36,10 @@ namespace Main.Scripts.Gameplay.Features.Worker.Controller
 
         private Subject<Unit> _onDestroy = new();
 
-        WorkerController(WorkerControllerConfig config, ResourceContainerController resourceContainerController, IDestination destination)
+        WorkerController(WorkerControllerConfig config, ResourceContainerController resourceContainerController)
         {
             _config = config;
             _resourceContainerController = resourceContainerController;
-            _destination = destination;
         }
 
         private WorkerGO Spawn()
@@ -49,6 +51,11 @@ namespace Main.Scripts.Gameplay.Features.Worker.Controller
 
         private void InitWorkers()
         {
+            var resourceCollectBuildings = _buildingController.GetBuildingByType(BuildingType.ResourceCollection);
+            
+            // TODO убрать когда будет ручное назначение добычи ресурсов
+            var firstCollectBuilding = resourceCollectBuildings.First();
+
             foreach (var spawnConfig in _config.WorkerSpawnConfigs)
             {
                 _workerCommandsQueue.Add(spawnConfig.gameResourceType, new Queue<IWorkerCommand>());
@@ -66,21 +73,21 @@ namespace Main.Scripts.Gameplay.Features.Worker.Controller
 
                 var resources = _resourceContainerController
                     .GetResources(spawnConfig.gameResourceType)
-                    .OrderBy(v => Vector3.Distance(v.Transform.position, _destination.Transform.position))
+                    .OrderBy(v => Vector3.Distance(v.Transform.position, firstCollectBuilding.gameObject.transform.position))
                     .ToList();
 
                 foreach (var extractable in resources)
                 {
-                    AddExtractCommand(extractable);
+                    AddExtractCommand(extractable, firstCollectBuilding.WorkerAcceptor);
                 }
             }
         }
 
-        private void AddExtractCommand(IExtractable extractable)
+        private void AddExtractCommand(IExtractable extractable, IWorkerAcceptor workerAcceptor)
         {
             if (_freeWorkers.TryGetValue(extractable.Info.gameResourceType, out var freeWorkerStack))
             {
-                var newCommand = new ExtractWorkerCommand(extractable, _destination);
+                var newCommand = new ExtractWorkerCommand(extractable, workerAcceptor);
                 
                 if (freeWorkerStack.IsEmpty())
                 {

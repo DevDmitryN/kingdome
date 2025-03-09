@@ -5,9 +5,11 @@ using Gameplay.Entities.Castle;
 using Gameplay.GoldMine;
 using Gameplay.Worker.WorkerStates;
 using JetBrains.Annotations;
+using Main.Scripts.Gameplay.Features.Building;
 using Main.Scripts.Gameplay.Features.ResourceContainer.Models;
 using Main.Scripts.Gameplay.Features.Worker.Config;
 using Main.Scripts.Gameplay.Features.Worker.Models;
+using Main.Scripts.Gameplay.Features.WorkerAcceptor;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -21,7 +23,7 @@ namespace Gameplay.Worker
         private Subject<Unit> _workComplete = new Subject<Unit>();
         [CanBeNull] public WorkExtractedInfo ExtractedInfo { get; private set; }
         [CanBeNull] public IWorkable Work { get; private set; }
-        [CanBeNull] public IDestination Destination { get; private set; }
+        [CanBeNull] public IWorkerAcceptor Acceptor { get; private set; }
         public WorkerConfigSO Config { get; private set; }
 
         [Inject]
@@ -49,10 +51,10 @@ namespace Gameplay.Worker
             _stateSwitcher.SwitchState<TState>();
         }
 
-        public IObservable<Unit> StartExtractProcess(IExtractable extractable, IDestination destination)
+        public IObservable<Unit> StartExtractProcess(IExtractable extractable, IWorkerAcceptor acceptor)
         {
             Work = extractable;
-            Destination = destination;
+            Acceptor = acceptor;
             ExtractedInfo = new WorkExtractedInfo()
             {
                 ResourceType = extractable.Info.gameResourceType, 

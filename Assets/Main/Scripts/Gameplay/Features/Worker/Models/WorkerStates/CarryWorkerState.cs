@@ -17,12 +17,12 @@ namespace Gameplay.Worker.WorkerStates
         
         public void Enter()
         {
-            var distance = Vector3.Distance(_worker.Destination.Transform.position, _worker.transform.position);
+            var distance = Vector3.Distance(_worker.Acceptor.Position, _worker.transform.position);
             var duration = distance / _worker.Config.Speed;
-            _worker.transform.DOMove(_worker.Destination.Transform.position, duration)
+            _worker.transform.DOMove(_worker.Acceptor.Position, duration)
                 .OnComplete(() =>
                 {
-                    _worker.Destination.AcceptWorker(_worker);
+                    _worker.Acceptor.AcceptWorker(_worker);
                     if (_worker.Work.IsEnded)
                     {
                         _worker.SetState<CompleteWorkerState>();

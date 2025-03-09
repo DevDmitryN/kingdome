@@ -34,9 +34,6 @@ namespace Main.Scripts.Gameplay.Installers
         [SerializeField] private Transform _workerFolder;
         [SerializeField] private WorkerConfigSO workerConfig;
         [SerializeField] private WorkerControllerConfig _workerControllerConfig;
-
-        [Header("Castle")]
-        [SerializeField] private CastleGO _castle;
         
         
         public override void InstallBindings()
@@ -53,7 +50,7 @@ namespace Main.Scripts.Gameplay.Installers
             Container.Bind<ResourceContainerController>().AsSingle()
                 .WithArguments(resourceContainerControllerConfig);
             Container.Bind<WorkerController>().AsSingle()
-                .WithArguments(_workerControllerConfig, _castle);
+                .WithArguments(_workerControllerConfig);
             
             Container.Bind<ISpawner<ResourceContainerGO>>()
                 .WithId(SpawnerType.GoldMine)

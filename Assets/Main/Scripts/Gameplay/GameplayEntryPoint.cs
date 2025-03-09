@@ -18,14 +18,17 @@ namespace Main.Scripts.Gameplay
         [Inject] private GameResourceController _gameResourceController;
         [Inject] private UIGameResourceList _uiGameResourceList;
         [Inject] private BuildingUIList _buildingUIList;
+        [Inject] private BuildingController _buildingController;
         
         private void Start()
         {
+            _buildingController.Init();
             _resourceContainerController.Init();
             _workerController.Init();
             _gameResourceController.Init();
             _uiGameResourceList.Init();
             _buildingUIList.Init();
+           
             
             _disposables.Add(_resourceContainerController);
             _disposables.Add(_workerController);

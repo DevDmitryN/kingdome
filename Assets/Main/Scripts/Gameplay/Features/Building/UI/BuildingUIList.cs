@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Main.Scripts.Gameplay.Features.Building.Factory;
 using Main.Scripts.Gameplay.Features.GameResources.Controller;
 using UniRx;
@@ -32,7 +33,9 @@ namespace Main.Scripts.Gameplay.Features.Building
 
         private void CreateListItems()
         {
-            foreach (var config in _config.BuildngConfigs)
+            var configs = _config.BuildngConfigs.Where(v => v.EnableBuild);
+
+            foreach (var config in configs)
             {
                 var listItem = CreateItem(config);
                 

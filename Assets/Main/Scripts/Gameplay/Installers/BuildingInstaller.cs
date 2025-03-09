@@ -5,6 +5,7 @@ using Main.Scripts.Gameplay.Features.Building.Factory;
 using Main.Scripts.Gameplay.Features.GameResources.Config;
 using Main.Scripts.Gameplay.Features.GameResources.Controller;
 using Main.Scripts.Gameplay.Features.GameResources.UI;
+using Main.Scripts.Gameplay.Features.WorkerAcceptor;
 using Main.Scripts.Gameplay.Installers.Tokens;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -66,6 +67,10 @@ namespace Main.Scripts.Gameplay.Installers
             Container.Bind<IBuildingListItemFactory>()
                 .To<CommonBuildingListItemFactory>()
                 .AsSingle();
+
+            Container.Bind<IBuildingFactory>()
+                .To<BuildingFactory>()
+                .AsSingle();
             
             Container.Bind<BuildingUIList>()
                 .FromInstance(UiBildingList)
@@ -76,6 +81,10 @@ namespace Main.Scripts.Gameplay.Installers
 
             Container.Bind(typeof(ITickable), typeof(BuildProcess))
                 .To<BuildProcess>()
+                .AsSingle();
+
+            Container.Bind<IWorkerAcceptorFactory>()
+                .To<WorkerAcceptorFactory>()
                 .AsSingle();
         }
     }
