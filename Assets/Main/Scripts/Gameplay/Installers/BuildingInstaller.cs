@@ -2,6 +2,7 @@
 using Extensions.Spawner.Mono;
 using Main.Scripts.Gameplay.Features.Building;
 using Main.Scripts.Gameplay.Features.Building.Factory;
+using Main.Scripts.Gameplay.Features.BuildingStrategy;
 using Main.Scripts.Gameplay.Features.GameResources.Config;
 using Main.Scripts.Gameplay.Features.GameResources.Controller;
 using Main.Scripts.Gameplay.Features.GameResources.UI;
@@ -85,6 +86,10 @@ namespace Main.Scripts.Gameplay.Installers
 
             Container.Bind<IWorkerAcceptorFactory>()
                 .To<WorkerAcceptorFactory>()
+                .AsSingle();
+
+            Container.Bind<IBuildingStrategyFactory>()
+                .To<BuildingStrategyFactory>()
                 .AsSingle();
         }
     }

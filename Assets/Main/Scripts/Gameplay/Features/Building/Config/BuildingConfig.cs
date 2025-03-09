@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using Main.Scripts.Gameplay.Features.Building.Strategy;
+using Main.Scripts.Gameplay.Features.BuildingStrategy;
 using UnityEngine;
 
 namespace Main.Scripts.Gameplay.Features.Building {

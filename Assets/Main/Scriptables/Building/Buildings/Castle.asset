@@ -18,6 +18,6 @@ MonoBehaviour:
   Sprite: {fileID: -1350331532839194127, guid: fe6e150ba026fd1438ab3c646decf22f, type: 3}
   Type: 1
   BuildResourceConditions: []
-  strategySo: {fileID: 0}
+  strategySo: {fileID: 11400000, guid: ebd5ea6cead00294c99de7de637f8e2a, type: 2}
   StartupBuildingConfig:
     StartPosition: {x: 0, y: 0, z: 0}

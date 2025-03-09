@@ -5,6 +5,7 @@ using System.Linq;
 using Extensions.Spawner;
 using Main.Scripts.Gameplay.Features.Building.Factory;
 using Main.Scripts.Gameplay.Features.GameResources.Controller;
+using Main.Scripts.Gameplay.Features.GameResources.Models.Events;
 using Main.Scripts.Gameplay.Installers.Tokens;
 using UniRx;
 using UnityEngine;
@@ -49,6 +50,16 @@ namespace Main.Scripts.Gameplay.Features.Building
 
         private void Build(Vector3 position, BuildingConfig config)
         {
+            foreach (var condition in config.BuildResourceConditions)
+            {
+                _resourceController.ReduceResource(
+                    new ReduceResourceParams() {
+                        Type = condition.ResourceType,
+                        Value = condition.RequiredValue
+                    }
+                );
+            }
+            
             var item = _buildingFactory.Create(position, config);
             _buildings.Add(item);
         }
