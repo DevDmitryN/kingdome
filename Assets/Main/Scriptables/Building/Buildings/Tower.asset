@@ -17,9 +17,7 @@ MonoBehaviour:
   Name: Tower
   Sprite: {fileID: -1515134823594722529, guid: 03de6165c57333546aa59de19789e3c0, type: 3}
   Type: 0
-  BuildResourceConditions:
-  - ResourceType: 0
-    RequiredValue: 30
+  BuildResourceConditions: []
   strategySo: {fileID: 11400000, guid: c15e933235fc61349b8c473837af5664, type: 2}
   StartupBuildingConfig:
     StartPosition: {x: 0, y: 0, z: 0}

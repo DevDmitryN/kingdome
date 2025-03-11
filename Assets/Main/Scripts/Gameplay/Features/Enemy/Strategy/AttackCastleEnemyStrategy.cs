@@ -24,11 +24,11 @@ namespace Main.Scripts.Gameplay.Features.Enemy.Strategy
 
             var duration = Vector3.Distance(enemy.transform.position, castle.transform.position) / _config.MoveSpeed;
 
-            Debug.Log("Start move");
+         
             enemy.transform.DOMove(castle.transform.position, duration)
                 .OnComplete(() =>
                 {
-                    Debug.Log("Move complete");
+                 
                 });
         }
     }
